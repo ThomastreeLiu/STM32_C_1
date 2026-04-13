@@ -97,9 +97,12 @@ int main(void)
     bool statusG = false;
     bool statusY = false;
     bool statusR = true;
+    bool switch_color = false;
+    bool switch_power = true;
+    bool run_status;
     HAL_Delay(250);
-    while(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1) == GPIO_PIN_RESET){
-    	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_RESET){
+    while(switch_power == true){
+    	  if(switch_color == true){
     		  if(statusR == false && statusY == false){
     			  statusR = true;
     			  statusG = false;
@@ -117,7 +120,20 @@ int main(void)
 
     	  }
     	  if(statusG){
-    		  	  for(int i = 0; i < 10; i++){
+    		  	  run_status = switch_color;
+    		  	  for(int i = 0; i < 10 && run_status == switch_color && switch_power == true; i++){
+    		  		  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1) == GPIO_PIN_SET){
+    		  			  switch_power = false;
+    		  		  }
+    		  		  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET && switch_color == true){
+    		  			  switch_color = false;
+        		  		  HAL_Delay(2000);
+    		  		  }
+    		  		  else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET && switch_color == false){
+    		  			  switch_color = true;
+        		  		  HAL_Delay(2000);
+
+    		  		  }
     		  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
     		  		  HAL_Delay(500);
     		  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
@@ -125,7 +141,21 @@ int main(void)
     		  	  }
     	  }
     	  else if(statusY){
-    	  		for(int i = 0; i < 10; i++){
+		  	  	run_status = switch_color;
+    	  		for(int i = 0; i < 10 && run_status == switch_color && switch_power == true; i++){
+    	  			if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1) == GPIO_PIN_SET){
+    	  				switch_power = false;
+    	  			}
+    	  			if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET && switch_color == true){
+    	  				switch_color = false;
+    	  				HAL_Delay(2000);
+
+    	  			}
+    	  			else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET && switch_color == false){
+    	  			    switch_color = true;
+    	  			    HAL_Delay(2000);
+
+    	  			}
     	  		  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
     	  		  		  HAL_Delay(500);
     	  		  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
@@ -133,7 +163,20 @@ int main(void)
     	  		 }
     	  }
     	  else if(statusR){
-    	  		for(int i = 0; i < 10; i++){
+		  	  	run_status = switch_color;
+    	  		for(int i = 0; i < 10 && run_status == switch_color && switch_power == true; i++){
+    	  				if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1) == GPIO_PIN_SET){
+    	  					switch_power = false;
+    	  			    }
+    	  			    if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET && switch_color == true){
+    	  			    	switch_color = false;
+    	  			    	HAL_Delay(2000);
+    	  			   	}
+    	  			   	else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET && switch_color == false){
+    	  			   	    switch_color = true;
+    	  			   	    HAL_Delay(2000);
+
+    	  			   	}
     	  		  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
     	  		  		  HAL_Delay(500);
     	  		  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
